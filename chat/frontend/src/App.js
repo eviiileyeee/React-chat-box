@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 const socket = io(`http://localhost:${port}`);
 
 function App() {
