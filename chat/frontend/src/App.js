@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 import './App.css';
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3001;
 const socket = io(`http://localhost:${port}`);
 
 function App() {
@@ -33,10 +33,10 @@ function App() {
       const msg = `${user}: ${message}`;
       setMessages((prevMessages) => [msg, ...prevMessages]);
     });
-  }, [messages]);
+  }, [socket]);
 
   const handleEnterChatRoom = () => {
-    if (user && room) {
+    if (user!=="" && room!=="") {
       socket.emit('join_room', { user, room });
       setChatVisible(true);
     }
@@ -56,7 +56,6 @@ function App() {
 
   return (
     <div className='chat-container'>
-      <h1>Chat App</h1>
       {!chatVisible ? (
         <div className='chat-input'>
           <input type='text' placeholder='Username' value={user} onChange={(e) => setUser(e.target.value)} />
@@ -66,8 +65,8 @@ function App() {
       ) : (
         <>
           <div className='chat-messages'>
-            {messages.map((msg, index) => (
-              <div key={index}>{msg}</div>
+            {messages.map((el) => (
+              <div key={v4}>{el}</div>
             ))}
           </div>
           <div className='chat-input'>
