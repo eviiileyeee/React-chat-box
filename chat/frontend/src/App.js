@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
+import './App.css';
 
 const port = process.env.PORT || 3000;
 const socket = io(`http://localhost:${port}`);
-import './App.css';
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -55,25 +55,28 @@ function App() {
   };
 
   return (
-    <>
-      <div className='chat-container'>
-        <h1>Chat App</h1>
+    <div className='chat-container'>
+      <h1>Chat App</h1>
+      {!chatVisible ? (
         <div className='chat-input'>
           <input type='text' placeholder='Username' value={user} onChange={(e) => setUser(e.target.value)} />
           <input type='text' placeholder='Room' value={room} onChange={(e) => setRoom(e.target.value)} />
           <button onClick={handleEnterChatRoom}>Enter Chat</button>
         </div>
-        <div className='chat-messages'>
-          {messages.map((msg, index) => (
-            <div key={index}>{msg}</div>
-          ))}
-        </div>
-        <div className='chat-input'>
-          <input type='text' placeholder='Message' value={newMessage} onChange={(e) => setnewMessage(e.target.value)} />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
-      </div>
-    </>
+      ) : (
+        <>
+          <div className='chat-messages'>
+            {messages.map((msg, index) => (
+              <div key={index}>{msg}</div>
+            ))}
+          </div>
+          <div className='chat-input'>
+            <input type='text' placeholder='Message' value={newMessage} onChange={(e) => setnewMessage(e.target.value)} />
+            <button onClick={handleSendMessage}>Send</button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
